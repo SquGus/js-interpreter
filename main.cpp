@@ -20,9 +20,9 @@ main( const int argc, const char **argv )
       /** simple help menu **/
       else if( std::strncmp( argv[ 1 ], "-h", 2 ) == 0 )
       {
-         std::cout << "use -o for pipe to std::cin\n";
-         std::cout << "just give a filename to count from a file\n";
-         std::cout << "use -h to get this menu\n";
+         std::cout << "to get help\n\tmy_js_interpreter -h\n\n";
+         std::cout << "to process input from terminal\n\tmy_js_interpreter -o <input from terminal>\n\n";
+         std::cout << "to process file\n\tmy_js_interpreter <file to interpret>\n\n";
          return( EXIT_SUCCESS );
       }
       /** example reading input from a file **/
@@ -36,6 +36,10 @@ main( const int argc, const char **argv )
    else
    {
       /** exit with failure condition **/
+      std::cout << "Error! usage:\n";
+      std::cout << "to get help\n\tmy_js_interpreter -h\n\n";
+      std::cout << "to process input from terminal\n\tmy_js_interpreter -o <input from terminal>\n\n";
+      std::cout << "to process file\n\tmy_js_interpreter <file to interpret>\n\n";
       return ( EXIT_FAILURE );
    }
    return( EXIT_SUCCESS );

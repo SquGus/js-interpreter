@@ -47,9 +47,9 @@ private:
    JS::JS_Scanner *scanner = nullptr;
    
    /** define some pretty colors **/
-   const std::string red   = "\033[1;31m";
-   const std::string blue  = "\033[1;36m";
-   const std::string norm  = "\033[0m";
+   // const std::string red   = "\033[1;31m";
+   // const std::string blue  = "\033[1;36m";
+   // const std::string norm  = "\033[0m";
 };
 
 } /* end namespace JS */

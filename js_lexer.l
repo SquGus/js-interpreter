@@ -65,8 +65,8 @@ using token = JS::JS_Parser::token;
 // "with"                                              { return ( token::WITH ); }
 // "yield"                                             { return ( token::YIELD ); }
 // "undefined"                                         { return ( token::UNDEFINED_V ); }
-//"'\\x"([0-9]|[A-F]|[a-f]){2}"'"                     { return ( token::HEX_SEQ ); }
-//"'\\u"([0-9]|[A-F]|[a-f]){4}"'"                     { return ( token::UNI_SEQ ); }
+// "'\\x"([0-9]|[A-F]|[a-f]){2}"'"                     { return ( token::HEX_SEQ ); }
+// "'\\u"([0-9]|[A-F]|[a-f]){4}"'"                     { return ( token::UNI_SEQ ); }
 // 0[X|x]([0-9]|[A-F]|[a-f])+                          { return ( token::HEX_V ); }
 // (0[O|o][0-7]+)|([-]?0[0-7]+)                        { return ( token::OCT_V ); }
 // 0b(0|1)+                                            { return ( token::BIN_V ); }
@@ -75,8 +75,8 @@ using token = JS::JS_Parser::token;
 	*/
 %}
 
-"//".*                                              {  }
-"/*"[^(\\*\\/)]*"*/"                                {  }
+"//".*[^\n]                                         { ; }
+"/*"([^(\\*\\/)])*"*/"                              { ; }
 "~"                                                 { return ( token::BIT_NOT_OP ); }
 "}"                                                 { return ( token::CLOSE_C ); }
 "{"                                                 { return ( token::OPEN_C ); }
@@ -146,7 +146,8 @@ using token = JS::JS_Parser::token;
 "false"                                             { return ( token::FALSE_V ); }
 [-]?([0-9])*[.]([0-9])+((E|e)([+]|[-])([0-9])+)?    { yylval->fval = atof(yytext); return ( token::FLT_V ); }
 [-]?([0-9])+                                        { yylval->ival = atoi(yytext); return ( token::INT_V ); }
-(\"([^\"\n\t\r])*\"+)|(\'([^\'\n\t\r])*\')          { yylval->sval = strdup(yytext); return ( token::STRING ); }
+"\'"([^\n\t\r"\'"\\]*(\\[.\n])*)*"\'"          		{ yylval->sval = strdup(yytext); return ( token::STRING ); }
+"\""([^\n\t\r"\""\\]*(\\[.\n])*)*"\""          		{ yylval->sval = strdup(yytext); return ( token::STRING ); }
 ([a-zA-Z]|$|_)+([a-zA-Z]|[0-9])*                    { yylval->sval = strdup(yytext); return ( token::ID ); }
 [\n|\r\t|\v|\f| ]                                   { ; }
 .                                                   { cout << "Couldn't parse \"" << yytext << endl; exit(-1); }

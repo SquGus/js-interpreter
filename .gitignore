@@ -1,5 +1,10 @@
 .DS_Store
 *.out
 *.o
+*.yy.cc
+*.output
+*.tab.cc
+*.tab.hh
+my_js_interpreter
 *.sublime-project
 *.sublime-workspace

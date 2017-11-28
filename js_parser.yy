@@ -57,6 +57,9 @@
   // char cval;
 }
 
+%nonassoc "then"
+%nonassoc ELSE
+
 %token END    0   "end of file"
 
 %token <nval> NULL_V
@@ -192,7 +195,7 @@ item
 */
 
 Program
-  : Statements
+  : Statements END
   ;
 
 Statements
@@ -237,7 +240,7 @@ Block
   ;
 
 IfStatement
-  : IF ParenthesizedExpression CodeStatement
+  : IF ParenthesizedExpression CodeStatement %prec "then"
   | IF ParenthesizedExpression CodeStatement ELSE CodeStatement
   ;
 
@@ -247,7 +250,7 @@ SwitchStatement
   ;
 
 CaseGroups
-  : 
+  : %empty
   | CaseGroups CaseGroup
   ;
 
@@ -287,7 +290,7 @@ ForStatement
   ;
 
 ForInitializer
-  : 
+  : %empty
   | Expression
   | VariableDefinitionKind VariableBinding
   ;
@@ -301,7 +304,7 @@ BreakStatement
   ;
 
 OptionalLabel
-  : 
+  : %empty
   | Identifier
   ;
 
@@ -329,11 +332,11 @@ VariableBinding
 
 TypedIdentifier
   : Identifier
-  | TypeExpression Identifier
+  // | TypeExpression Identifier
   ;
 
 VariableInitializer
-  : 
+  : %empty
   | VA_OP AssignmentExpression
   ;
 
@@ -342,7 +345,7 @@ FunctionDefinition
   ;
 
 FunctionSignature
-  : ParameterSignature ResultSignature
+  : ParameterSignature //ResultSignature
   ;
 
 ParameterSignature
@@ -350,7 +353,7 @@ ParameterSignature
   ;
 
 Parameters
-  : 
+  : %empty
   | RequiredParameters
   ;
 
@@ -363,10 +366,10 @@ RequiredParameter
   : TypedIdentifier
   ;
 
-ResultSignature
-  : 
-  | TypeExpression
-  ;
+// ResultSignature
+//   : %empty
+//   | TypeExpression
+//   ;
 
 Expression
   : AssignmentExpression
@@ -375,7 +378,7 @@ Expression
 
 OptionalExpression
   : Expression
-  | 
+  | %empty
   ;
 
 AssignmentExpression
@@ -406,19 +409,19 @@ Identifier
   : ID
   ;
 
-TypeExpression
-  : NonAssignmentExpression
-  ;
+// TypeExpression
+//   : NonAssignmentExpression
+//   ;
 
 ConditionalExpression
   : LogicalOrExpression
   | LogicalOrExpression TERNARY_OP AssignmentExpression PA_OP AssignmentExpression
   ;
 
-NonAssignmentExpression
-  : LogicalOrExpression
-  | LogicalOrExpression TERNARY_OP NonAssignmentExpression PA_OP NonAssignmentExpression
-  ;
+// NonAssignmentExpression
+//   : LogicalOrExpression
+//   | LogicalOrExpression TERNARY_OP NonAssignmentExpression PA_OP NonAssignmentExpression
+//   ;
 
 PostfixExpression
   : FullPostfixExpression
@@ -466,7 +469,7 @@ Arguments
   ;
 
 ArgumentList
-  : 
+  : %empty
   | ArgumentListPrefix
   ;
 
@@ -477,7 +480,7 @@ ArgumentListPrefix
 
 PrimaryExpression
   : SimpleExpression
-  | FunctionExpression
+  // | FunctionExpression
   | ObjectLiteral
   ;
 
@@ -493,14 +496,14 @@ SimpleExpression
   | ArrayLiteral
   ;
 
-FunctionExpression
-  : AnonymousFunction
-  | NamedFunction
-  ;
+// FunctionExpression
+//   : AnonymousFunction
+//   | NamedFunction
+//   ;
 
-AnonymousFunction
-  : FUNCTION FunctionSignature Block
-  ;
+// AnonymousFunction
+//   : FUNCTION FunctionSignature Block
+//   ;
 
 NamedFunction
   : FUNCTION Identifier FunctionSignature Block
